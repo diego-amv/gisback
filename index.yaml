@@ -1,0 +1,11 @@
+indexes:
+  - kind: GIS
+    ancestor: yes
+    properties:
+      - name: Time
+        direction: desc
+
+  - kind: GIS
+    ancestor: yes
+    properties:
+      - name: IMEI

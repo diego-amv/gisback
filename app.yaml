@@ -1,0 +1,13 @@
+app_engine_apis: true
+runtime: go116
+
+handlers:
+  - url: /track/all
+    script: auto
+    secure: always
+    login: admin
+    auth_fail_action: redirect
+  - url: /.*
+    script: auto
+    secure: always
+    redirect_http_response_code: 301
