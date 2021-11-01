@@ -54,7 +54,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("Se detecta en AppEngine")
 		c := appengine.NewContext(r)
 		u := user.Current(c)
-		if u == nil && !u.Admin {
+		if u == nil || !u.Admin {
 			loggedUser = false
 		}
 		page = getPage(r.URL.Query(), nil, c, "", 0)
@@ -71,7 +71,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 				log.Printf("Error en cierre de cliente datastore")
 			}
 		}(client)
-		page = getPage(r.URL.Query(), client, r.Context(), "",0)
+		page = getPage(r.URL.Query(), client, r.Context(), "", 0)
 		gisItems, _ = getAllGISLocal(client, r.Context(), page.Offset)
 	}
 
@@ -81,8 +81,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	data := PageData{
 		ContentTitle: "Últimos 5 registros",
 		LoginURL:     loginUrl,
-		MapsApiKey: MapsAPIKey,
-		LoggedUser: loggedUser,
+		MapsApiKey:   MapsAPIKey,
+		LoggedUser:   loggedUser,
 		Items:        gisItems,
 		Page:         page,
 	}
@@ -147,7 +147,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 				log.Println("Se detecta en AppEngine")
 				c := appengine.NewContext(r)
 				u := user.Current(c)
-				if u == nil && !u.Admin {
+				if u == nil || !u.Admin {
 					loggedUser = false
 				}
 				page = getPage(r.URL.Query(), nil, c, "search", imeiValue)
@@ -174,8 +174,8 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 			data := PageData{
 				ContentTitle: fmt.Sprintf("Registros IMEI: %s", imei),
 				Path:         "search",
-				MapsApiKey: MapsAPIKey,
-				LoggedUser: loggedUser,
+				MapsApiKey:   MapsAPIKey,
+				LoggedUser:   loggedUser,
 				LoginURL:     loginURL,
 				Items:        gisItems,
 				Page:         page,
